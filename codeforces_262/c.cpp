@@ -1,0 +1,74 @@
+#include<stdio.h>
+#include<iostream>
+#include<math.h>
+#include<string.h>
+#include<algorithm>
+#include<vector>
+#include<stack>
+#include<queue>
+#define print(Z,a,b) for (int __z = a; __z < b; __z ++) cout << Z[__z] << " ";
+#define scan(Z,a,b) for (int __z = a; __z < b; __z ++) cin >> Z[__z];
+#define bit(_z) (1ll << _z)
+using namespace std;
+
+int n, m, w;
+int A[100010];
+
+struct BIT {
+	int data[200010];
+	void init() {
+		memset(data, 0, sizeof data);
+	}
+	int query(int idx) {
+		idx ++;
+		int ret = 0;
+		while (idx) {
+			ret += data[idx];
+			idx -= idx & (-idx);
+		}
+		return ret;
+	}
+	int update(int idx, int val) {
+		idx ++;
+		while (idx <= 200010) {
+			data[idx] += val;
+			idx += idx & (-idx);
+		}
+	}
+} bit;
+
+bool f(int level) {
+	bit.init();
+
+	int i = 0, j = 0;
+	for (; i < n; i ++) {
+		int dif = level - A[i] - bit.query(i);
+		if (dif <= 0)
+			continue;
+		bit.update(i + w , -dif);		
+		bit.update(i, dif);		
+		j += dif;
+		if (j > m)
+			return false;
+	}
+
+	return j <= m;
+}
+
+int main () {
+	cin >> n >> m >> w;
+	scan(A, 0, n);
+
+	int l = 1, r = 2000000000, m;
+	while (l < r) {
+		m = l + (r-l+1) / 2;
+		if (f(m))
+			l = m;
+		else
+			r = m-1;
+	}
+
+	cout << l << endl;
+
+	return 0;
+}  	

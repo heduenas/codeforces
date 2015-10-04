@@ -1,0 +1,39 @@
+#include<stdio.h>
+#include<iostream>
+#include<math.h>
+#include<string.h>
+#include<algorithm>
+#include<vector>
+#include<stack>
+#include<queue>
+#define print(Z,a,b) for (int __z = a; __z < b; __z ++) cout << Z[__z] << " ";
+#define scan(Z,a,b) for (int __z = a; __z < b; __z ++) cin >> Z[__z];
+#define bit(_z) (1ll << _z)
+using namespace std;
+
+string str;
+
+int main () {
+	while (cin.getline (str) != 0) {
+		int len = str.length ();
+		bool valid = true;
+		if (len % 2 == 1)
+			valid = false;
+		else {
+			char *cstr = str.cstr;
+			if (cstr[0] != '"' or cstr[len/2] != '"')
+			for (int i = 0, j = (len / 2) + 2; j < len; j ++, j++)
+				if (cstr[i] != cstr[j])
+					valid = false;
+		}
+		if (!valid)
+			cout << "not a quine" << endl;
+		else {
+			for (int i = 0, j = (len / 2) + 2; j < len; j ++, j++)
+				printf ("%c", cstr[j]);
+			printf ("\n");
+		}
+	}
+	
+	return 0;
+}  

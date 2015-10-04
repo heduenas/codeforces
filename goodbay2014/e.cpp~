@@ -1,0 +1,128 @@
+#include <stdio.h>
+#include <algorithm>
+#include <iostream>
+#include <utility>
+#include <queue>
+#include <stack>
+#include <set>
+#include <map>
+#include <math.h>
+#include <string>
+#include <string.h>
+#include <vector>
+#include <set>
+#include <list>
+#include <sstream>
+#include <cassert>
+#include <time.h>
+#include <stdlib.h>
+#include <ctype.h>
+
+#define print(Z,a,b) for (long long __z = a; __z < b; __z ++) cout << Z[__z] << " ";
+#define scan(Z,a,b) for (long long __z = a; __z < b; __z ++) cin >> Z[__z];
+#define bit(_z) (1ll << (_z))
+#define rep(__z,__Z) for(long long __z = 0; __z < __Z ; __z++ )
+#define all(__z) __z.begin(),__z.end()
+
+#define par pair<int, int>
+#define p1 first
+#define p2 second
+
+#define eps = 1e-6
+
+using namespace std;
+
+long long dx[]={0,0,1,-1};
+long long dy[]={1,-1,0,0};
+
+long long n, P[200100], L[200100], PL[200100];
+long long q, x, y;
+long long cost[200100];
+long long ccost[200100];
+
+struct BIT {
+	long long data[200010];
+	void init() {
+		memset(data, 128, sizeof data);
+	}
+	long long query(long long idx) {
+		idx ++;
+		long long ret = 0;
+		while (idx) {
+			ret = max(ret, data[idx]);
+			idx -= idx & (-idx);
+		}
+		return ret;
+	}
+	long long update(long long idx, long long val) {
+		idx ++;
+		while (idx <= 200010) {
+			data[idx] = max(data[idx], val);
+			idx += idx & (-idx);
+		}
+	}
+} link, val, link2, M;
+
+long long bs(long long pl)
+{
+	long long l = 0, r = n-1, m;
+	while (l < r)
+	{
+		m = (l + r + 1) / 2;
+		if (P[m] > pl)
+			r = m-1;
+		else
+			l = m;
+	}
+	return l;
+}
+
+void preprocess()
+{
+	for (long long i = n-1; i >= 0; i --)
+	{
+		link.update(i, i);
+		long long last = link.query(bs(PL[i]));
+		link.update(i, last);
+		
+		link2.update(i, last);
+		long long last2 = link2.query(last);
+		link2.update(i, last2);
+		
+		val.update(i, PL[i]);
+		if (last2 < n-1)
+		{
+			cost[i] = cost[last2+1] + P[last2+1] - (val.query(last2));
+			assert(P[last2+1] - (val.query(last2)) > 0);
+		}
+		else
+			cost[i] = 0;
+	}
+	M.init();
+	for (int i = 0; i < n; i ++)
+		M.update(-cost[i]);
+}
+
+int main()
+{
+	cin >> n;
+	for (long long i = 0; i < n; i ++)
+	{
+		cin >> P[i] >> L[i];
+		PL[i] = P[i] + L[i];
+	}
+	
+	preprocess();
+	
+	cin >> q;
+	for (long long i = 0; i < q; i ++)
+	{
+		cin >> x >> y;	
+		x --; y --;
+		cout << cost[x] - cost[y] << endl;	
+	}
+
+	return 0;
+}
+
+

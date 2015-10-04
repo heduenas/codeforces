@@ -1,0 +1,76 @@
+#include<stdio.h>
+#include<iostream>
+#include<math.h>
+#include<string.h>
+#include<algorithm>
+#include<vector>
+#include<stack>
+#include<queue>
+#define print(Z,a,b) for (int __z = a; __z < b; __z ++) cout << Z[__z] << " ";
+#define scan(Z,a,b) for (int __z = a; __z < b; __z ++) cin >> Z[__z];
+#define bit(_z) (1ll << _z)
+using namespace std;
+
+long long m, n;
+long long I[100100][2];
+long long V[100100][3];
+
+long long A[100100];
+
+long long bucket = 0;
+int search (long long idx) {
+	while (bucket < m and !(I[bucket][0] <= idx and idx < I[bucket][1]))
+		bucket ++;
+	return bucket;
+}
+
+int main () {
+	cin >> m;
+	for (long long i = 0; i < m; i ++) {
+		if (i-1 >= 0)
+			I[i][0] = I[i-1][1];
+		else
+			I[i][0] = 1;
+			
+		cin >> V[i][0] >> V[i][1];
+			
+		if (V[i][0] == 1) {
+			I[i][1] = I[i][0] + 1;
+		} else {
+			cin >> V[i][2];
+			I[i][1] = I[i][0] + V[i][1] * V[i][2];
+		}
+	}
+	
+	for (long long i = 1, buck = 0; buck < m and i <= 100010; ) {
+		buck = search (i);
+		if (buck >= m)
+			break;
+		
+		if (V[buck][0] == 1)
+			A[i] = V[buck][1];
+		else
+			A[i] = A[1+(i - I[buck][0]) % V[buck][1]];
+		i ++;
+	}
+	
+	bucket = 0;
+	cin >> n;
+	long long idx;
+	long long buck;
+	for (int i = 0; i < n; i ++) {
+		cin >> idx;
+		if (idx <= 100001)
+			cout << A[idx] << " ";
+		else {
+			buck = search (idx);
+			if (V[buck][0] == 1)
+				cout << V[buck][1] << " ";
+			else
+				cout << A[1+(idx - I[buck][0]) % V[buck][1]] << " ";
+		}
+	}
+	cout << endl;
+
+	return 0;
+}  	

@@ -1,0 +1,79 @@
+#include<stdio.h>
+#include<iostream>
+#include<math.h>
+#include<string.h>
+#include<algorithm>
+#include<vector>
+#include<stack>
+#include<queue>
+#define print(Z,a,b) for (int __z = a; __z < b; __z ++) cout << Z[__z] << " ";
+#define scan(Z,a,b) for (int __z = a; __z < b; __z ++) cin >> Z[__z];
+#define bit(_z) (1ll << _z)
+using namespace std;
+
+int n, m, n2;
+int q, q2;
+bool Q[22];
+
+int A[5000000];
+long long ST[22][(2 << 20) + 10];
+long long sst[22];
+
+long long inv(int size, int start) {
+	long long ret = 0;
+	int idx1 = start, idx2 = start + size;
+	while ((idx1 < start + size) and (idx2 < start + 2 * size)) {
+		if (A[idx2] < A[idx1]) {
+			ret += start + size - idx1;
+			idx2 ++;
+		} else {
+			idx1 ++;
+		}
+		
+	}
+	return ret;
+}
+
+void build() {
+	for (int i = 1, idx = 1; i <= (1 << n); i <<= 1, idx ++) {
+		for (int j = 0; j < (1 << n); j += 2 * i) {
+			sort(A+ j, A+(j + i));
+			sort(A+(j+i), A+(j+2 * i));
+			ST[idx][j] = inv(i, j);
+			sst[idx] += ST[idx][j];
+		}
+	}
+}
+
+long long query() {
+	long long ret = 0;
+	for (int i = 1; i <= n; i ++) {
+		long long po = (1ll << ((long long) (i)));
+		//long long po2 = (1ll << ((long long) (n-i)));
+		ret += sst[i];
+		if (Q[i]) {
+			ret = ((1 << (n-1)) * (po - 1ll))- ret;
+		}
+	}
+	return ret;
+}
+
+int main () {
+	scanf("%d", &n);
+	n2 = 1 << n;
+	for (int i = 0; i < n2; i ++)
+		scanf("%d", &A[i]);
+		
+	build();
+		
+	scanf("%d", &m);
+	for (int i = 0; i < m; i ++) {
+		scanf("%d", &q);
+		Q[q] = !Q[q];
+		printf("%lld\n", query());
+//		cout << query() << endl;
+//		printf("%I64d\n", double(query());
+	}
+
+	return 0;
+}  	

@@ -1,0 +1,16 @@
+#include<stdio.h>
+#include<iostream>
+using namespace std;
+
+long long n, k;
+
+int main() {
+	cin >> n >> k;
+	if ((n + 1) / 2 >= k) {
+		cout << 2 * k - 1 << endl;
+	} else {
+		k -= (n+1)/2;
+		cout << 2 * k << endl;
+	}
+	return 0;
+}

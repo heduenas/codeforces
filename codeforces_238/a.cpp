@@ -1,0 +1,48 @@
+#include<stdio.h>
+#include<iostream>
+#include<math.h>
+#include<string.h>
+#include<algorithm>
+#include<vector>
+#include<stack>
+#include<queue>
+#define print(Z,a,b) for (int __z = a; __z < b; __z ++) cout << Z[__z] << " ";
+#define scan(Z,a,b) for (int __z = a; __z < b; __z ++) cin >> Z[__z];
+#define bit(_z) (1ll << _z)
+using namespace std;
+
+int n, q, M[2010][2010];
+int Q[2][2][2010];
+int f[2][2010];
+int usqr;
+
+int main () {
+	scanf("%d", &n);
+	for (int i = 0; i < n; i ++)
+		for (int j = 0; j < n; j ++)
+			scanf ("%d", &M[i][j]);
+		
+	for (int i = 0; i < n; i ++)
+		usqr += (M[i][i]);
+	usqr %= 2;
+	
+	scanf("%d", &q);
+	for (int i = 0; i < q; i ++) {
+		int t, idx;
+		scanf("%d", &t);
+		if (t == 1) {
+		scanf("%d", &idx);
+			idx --;
+			M[idx][idx] = !M[idx][idx];
+			usqr = !usqr;
+		} else if (t == 2) {
+		scanf("%d", &idx);
+			idx --;
+			M[idx][idx] = !M[idx][idx];
+			usqr = !usqr;
+		} else {
+			printf("%d", usqr);
+		}
+	}
+	return 0;
+}  	

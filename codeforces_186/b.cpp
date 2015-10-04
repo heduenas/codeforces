@@ -1,0 +1,32 @@
+#include<stdio.h>
+#include<iostream>
+#include<math.h>
+#include<string.h>
+#include<algorithm>
+#include<vector>
+using namespace std;
+
+int A[1000000];
+char str[1000000];
+int m, l, r;
+
+int main () {
+	cin >> str;
+	for (int i = 0; str[i]; i ++) {
+		if (str[i] == str[i+1])
+			A[i] = 1;
+	}
+	for (int i = 1; str[i]; i ++)
+		A[i] += A[i-1];
+		
+	cin >> m;
+	for (int i = 0; i < m; i ++) {
+		scanf ("%d%d", &l, &r);
+		int ans = A[r-2];
+		if (l > 1)
+			ans -= A[l-2];
+		printf ("%d\n", ans);
+	}
+
+	return 0;
+}

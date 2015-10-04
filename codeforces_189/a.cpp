@@ -1,0 +1,32 @@
+#include<stdio.h>
+#include<iostream>
+#include<math.h>
+#include<string.h>
+#include<algorithm>
+#include<vector>
+using namespace std;
+
+char str[1000000];
+
+int main () {
+	cin >> str;
+	
+	for (int i = 0; str[i];) {
+		if (str[i] != '1') {
+			printf ("NO\n");			return 0;
+		} else {
+			int cnt = 0;
+			i ++;
+			while (str[i] == '4') {
+				i ++;
+				cnt ++;
+			}
+			if (cnt >= 3) {
+				printf ("NO\n");			return 0;
+			}
+		}
+	}
+			printf ("YES\n");
+
+	return 0;
+}

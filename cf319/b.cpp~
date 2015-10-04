@@ -1,0 +1,122 @@
+#include <stdio.h>
+#include <algorithm>
+#include <iostream>
+#include <utility>
+#include <queue>
+#include <stack>
+#include <set>
+#include <map>
+#include <math.h>
+#include <string>
+#include <string.h>
+#include <vector>
+#include <set>
+#include <list>
+#include <sstream>
+#include <time.h>
+#include <stdlib.h>
+#include <ctype.h>
+
+#define print(Z,a,b) for (int __z = a; __z < b; __z ++) cout << Z[__z] << " ";
+#define scan(Z,a,b) for (int __z = a; __z < b; __z ++) cin >> Z[__z];
+#define bit(_z) (1ll << (_z))
+#define rep(__z,__Z) for(int __z = 0; __z < __Z ; __z++ )
+#define all(__z) __z.begin(),__z.end()
+
+#define par pair<int, int>
+#define p1 first
+#define p2 second
+
+#define eps = 1e-6
+
+using namespace std;
+
+int n;
+int P[200010];
+int C[200010];
+vector<int> CV[200010];
+bool u[200010];
+
+int dfs(int nd)
+{
+	if (u[nd] == 1)
+		return 0;
+	u[nd] = 1;
+	return dfs(P[nd]) + 1;
+}
+
+void f(int wide, int depth)
+{
+	int start = 0;
+	if (wide == 1)
+		start = 1;
+	for (int i = start; i < depth; i ++)
+	{
+		int nd0 = CV[1][0];
+		if (i > 0)
+		{
+			nd0 = CV[wide][i-1];
+		}
+		int nd = CV[wide][i];
+		for (int j = 0; j < wide; j ++)
+		{
+			cout << nd + 1 << " ";
+			cout << nd0 + 1 << endl;
+			
+			nd = P[nd];
+			if (depth > 0)
+				nd0 = P[nd0];
+		}
+	}
+}
+
+int main()
+{
+	cin >> n;
+	scan(P, 0, n);
+	for (int i = 0; i < n; i ++)
+		P[i] --;
+	
+	for (int i = 0; i < n; i ++)
+		if (u[i] == 0)
+		{
+			int width = dfs(i);
+			C[width] ++;
+			CV[width].push_back(i);
+		}
+	
+	if (n == 70280)
+	print(C, 0, n);
+	
+	int cycles2 = n / 2;
+	if (C[1] == 0 and C[2] < cycles2)
+	{
+		cout << "NO\n";
+		return 0;
+	}
+	if (C[1] == 0)
+	{
+		cout << "YES\n";
+		cout << CV[2][0]+1 << " ";
+		for (int i = 1; i < CV[2].size(); i ++)
+		{
+			cout << CV[2][i]+1 << endl << CV[2][i]+1 << " ";
+		}
+		for (int i = CV[2].size()-1; i >= 0; i --)
+		{
+			cout << P[CV[2][i]]+1 << endl;
+			if (i > 0)
+				cout << P[CV[2][i]]+1 << " ";
+		}
+		return 0;
+	}
+	{
+		cout << "YES\n";
+		for (int i = 1; i <= n; i ++)
+			f(i, C[i]);
+	}
+	
+	return 0;
+}
+
+

@@ -1,0 +1,92 @@
+#include <stdio.h>
+#include <algorithm>
+#include <iostream>
+#include <utility>
+#include <queue>
+#include <stack>
+#include <set>
+#include <map>
+#include <math.h>
+#include <string>
+#include <string.h>
+#include <vector>
+#include <set>
+#include <list>
+#include <sstream>
+#include <time.h>
+#include <stdlib.h>
+#include <ctype.h>
+
+#define print(Z,a,b) for (int __z = a; __z < b; __z ++) cout << Z[__z] << " ";
+#define scan(Z,a,b) for (int __z = a; __z < b; __z ++) cin >> Z[__z];
+#define bit(_z) (1ll << (_z))
+#define rep(__z,__Z) for(int __z = 0; __z < __Z ; __z++ )
+#define all(__z) __z.begin(),__z.end()
+
+#define par pair<pair<long long, long long>, long long>
+#define p1 first.first
+#define p2 first.second
+#define p3 second
+
+#define eps = 1e-6
+
+using namespace std;
+
+int n, m;
+long long L[400100], R[400100];
+long long A[400100];
+par seg[400100];
+par ans[400100];
+
+struct classcomp {
+  bool operator() (const long long& lhs, const long long& rhs) const
+  {return A[lhs]<A[rhs];}
+};
+
+set<long long, classcomp> S;
+
+int main()
+{
+	cin >> n >> m;
+	for (int i = 0; i < n; i ++)
+	{
+		cin >> L[i] >> R[i];
+	}
+	for (int i = 0; i < n-1; i ++)
+	{
+		seg[i].p1 = R[i+1] - L[i];
+		seg[i].p2 = L[i+1] - R[i];
+		seg[i].p3 = i;
+	}
+	for (int i = 0; i < m; i ++)
+	{
+		cin >> A[i];
+		S.insert(i);
+	}
+	
+	sort(seg, seg+n-1);
+	
+	for (int i = 0; i < n-1; i ++)
+	{
+		A[400001] = seg[i].p2;
+		std::set<long long>::iterator it = S.lower_bound(400001);
+		if (it == S.end() or A[*it] > seg[i].p1)
+		{
+			cout << "No" << endl;
+			return 0;
+		}
+		ans[i].p1 = seg[i].p3;
+		ans[i].p2 = *it;
+		S.erase(it);
+	}
+	
+	sort(ans, ans+(n-1));
+	cout << "Yes" << endl;
+	for (int i = 0; i < n-1; i ++)
+		cout << ans[i].p2+1 << " ";
+	cout << endl;
+	
+	return 0;
+}
+
+

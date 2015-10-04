@@ -1,0 +1,41 @@
+#include<stdio.h>
+#include<iostream>
+#include<math.h>
+#include<string.h>
+#include<algorithm>
+#include<vector>
+#include<stack>
+#include<queue>
+#define print(Z,a,b) for (int __z = a; __z < b; __z ++) cout << Z[__z] << " ";
+#define scan(Z,a,b) for (int __z = a; __z < b; __z ++) cin >> Z[__z];
+#define bit(_z) (1ll << _z)
+using namespace std;
+
+int n, k;
+int A[100010];
+
+int ans_idx = 0;
+int ans_val = -1;
+
+int main () {
+	cin >> n >> k;
+	scan (A, 0, n);
+	
+	for (int i = 0; i < k; i ++) {
+		int opt_val = 0;
+		int j = i;
+		do {
+			opt_val += A[j];
+			j += k;
+			j %= n;
+		} while (j != i);
+		if (ans_val == -1 or ans_val > opt_val) {
+			ans_val = opt_val;
+			ans_idx = i;
+		}
+	}
+	
+	cout << ans_idx + 1 << endl;
+	
+	return 0;
+}  	
