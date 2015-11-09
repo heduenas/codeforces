@@ -1,0 +1,67 @@
+#include <stdio.h>
+#include <algorithm>
+#include <iostream>
+#include <utility>
+#include <queue>
+#include <stack>
+#include <set>
+#include <map>
+#include <math.h>
+#include <string>
+#include <cassert>
+#include <string.h>
+#include <vector>
+#include <set>
+#include <list>
+#include <sstream>
+#include <time.h>
+#include <cstdlib>
+#include <ctype.h>
+
+#define deb(x) cout << #x << " = " << x << endl;
+#define print(Z,a,b) for (int __z = a; __z < b; __z ++) cout << Z[__z] << " ";
+#define scan(Z,a,b) for (int __z = a; __z < b; __z ++) cin >> Z[__z];
+#define bit(_z) (1ll << (_z))
+#define rep(__z,__Z) for(int __z = 0; __z < __Z ; __z++ )
+#define all(__z) __z.begin(),__z.end()
+
+#define par pair<int, int>
+#define p1 first
+#define p2 second
+
+#define eps = 1e-6
+
+using namespace std;
+
+long long t, a, b;
+
+int main()
+{
+	cin >> t >> a >> b;
+	if (b < a)
+		swap(a, b);
+		
+	long long gd = __gcd(a, b);
+	long long gm = (a / gd) * b;
+	if (gm < 0)
+	{
+		while(1);
+		cout << min(t, a-1) << endl;
+		return 0;
+	}
+	
+	long long ak = (t / gm);
+	long long ans = ak * a;
+	ans += min(t+1, (ak) * gm + a) - (ak * gm);
+	ans--;
+//	deb(ans);
+//	deb(gd);
+//	deb(gm);
+//	deb(ak);
+//	deb(min(t, (ak) * gm + a - 1) - (ak * gm-1));
+	cout << ans / __gcd(ans, t) << "/" << t / __gcd(ans, t) << endl;
+
+	return 0;
+}
+
+
