@@ -1,0 +1,87 @@
+#include <stdio.h>
+#include <algorithm>
+#include <iostream>
+#include <utility>
+#include <queue>
+#include <stack>
+#include <set>
+#include <map>
+#include <math.h>
+#include <string>
+#include <string.h>
+#include <vector>
+#include <set>
+#include <list>
+#include <sstream>
+#include <time.h>
+#include <stdlib.h>
+#include <ctype.h>
+
+#define print(Z,a,b) for (int __z = a; __z < b; __z ++) cout << Z[__z] << " ";
+#define scan(Z,a,b) for (int __z = a; __z < b; __z ++) cin >> Z[__z];
+#define bit(_z) (1ll << (_z))
+#define rep(__z,__Z) for(int __z = 0; __z < __Z ; __z++ )
+#define all(__z) __z.begin(),__z.end()
+
+#define par pair<int, int>
+#define p1 first
+#define p2 second
+
+#define eps = 1e-6
+
+using namespace std;
+
+int n;
+pair<int, int> A[410000];
+pair<int, int> B[410000];
+
+long long ans;
+
+int main()
+{
+	cin >> n;
+	for (int i = 0; i < n; i ++) {
+		cin >> A[i].first >> A[i].second;
+		B[i].second = A[i].first;
+		B[i].first = A[i].second;
+	}
+
+	sort(A, A + n);
+	sort(B, B + n);
+	
+	long long count = 1;
+	for (int i = 1; i <= n; i ++) {
+		if (i != n and A[i].first == A[i-1].first) {
+			count ++;
+		} else {
+			ans += (count * (count - 1)) / 2;
+			count = 1;
+		}
+	}
+	cout << ans << endl;
+	
+	count = 1;
+	for (int i = 1; i <= n; i ++) {
+		if (i != n and B[i].first == B[i-1].first) {
+			count ++;
+		} else {
+			ans += (count * (count - 1)) / 2;
+			count = 1;
+		}
+	}
+	cout << ans << endl;
+	
+	count = 1;
+	for (int i = 1; i <= n; i ++) {
+		if (i != n and A[i] == A[i-1]) {
+			count ++;
+		} else {
+			ans -= (count * (count - 1)) / 2;
+			count = 1;
+		}
+	}
+
+	cout << ans << endl;
+
+	return 0;
+}
